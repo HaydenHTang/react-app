@@ -12,7 +12,7 @@ const reducer = (state = initialState, action) => {
         newState.age--
     } else if (action.type === 'CREATE_USER') {
         newState.noOfUser++
-        newState.users.push(action.payload)
+        newState.users = [...newState.users, action.payload]
     }
     return newState
 }

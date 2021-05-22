@@ -8,7 +8,10 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import axios from 'axios';
 
 const mapStateToProps = (state) => {
-  return { age: state.age }
+  return {
+    age: state.age,
+    users: state.users
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -27,9 +30,8 @@ const createUser = async () => {
   }
   await axios.post(`http://localhost:3000/users/createUser`, userObj)
     .then(res => {
-      console.log(res);
-      console.log(res.data);
-      userObj.userId = res.data
+      userObj.id = res.data.data.userId
+      userObj.userId = res.data.data.userId
     })
   return {
     type: 'CREATE_USER',
@@ -42,8 +44,9 @@ const darkTheme = createMuiTheme({
     type: 'dark',
   },
 });
-class App extends Component {
 
+const column = [{ field: 'userId', width: 120 }, { field: 'firstName', width: 140 }, { field: 'lastName', width: 140 }, { field: 'jobTitle', width: 140 }]
+class App extends Component {
   render() {
     return (
       <ThemeProvider theme={darkTheme}>
@@ -54,19 +57,9 @@ class App extends Component {
             <Button onClick={this.props.onAgeUp}>Age Up</Button>
             <Button onClick={this.props.onAgeDown}>Age Down</Button>
             <Button onClick={this.props.onCreateUser}>Create User</Button>
-            <div style={{ height: 200, width: '50%' }}>
-              <div style={{ display: 'flex', height: '100%' }}>
-                <div style={{ flexGrow: 1 }}>
-                  <DataGrid columns={[{ field: 'username' }, { field: 'age' }, { field: 'id' }]}
-                    rows={[
-                      {
-                        id: 1,
-                        username: '@MaterialUI',
-                        age: 20,
-                      },
-                    ]} />
-                </div>
-              </div>
+            <div style={{ height: 200, width: '70%' }}>
+              <DataGrid columns={column}
+                rows={this.props.users} />
             </div>
           </header>
         </div>
