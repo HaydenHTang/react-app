@@ -11,13 +11,15 @@ import axios from 'axios';
 const mapStateToProps = (state) => {
   return {
     noOfUser: state.noOfUser,
-    users: state.users
+    users: state.users,
+    userInput: state.userInput
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onCreateUser: async () => dispatch(await createUser())
+    onCreateUser: async () => dispatch(await createUser()),
+    handleTextField: (field, value) => dispatch(handleTextField(field, value))
   }
 }
 
@@ -44,6 +46,17 @@ const darkTheme = createMuiTheme({
   },
 });
 
+const handleTextField = (e) => {
+  const { name, value } = e.target;
+  return {
+    type: 'CHANGE_INPUT',
+    payload: {
+      name: name,
+      value: value,
+    }
+  }
+};
+
 const column = [{ field: 'userId', width: 120 }, { field: 'firstName', width: 140 }, { field: 'lastName', width: 140 }, { field: 'jobTitle', width: 140 }]
 class App extends Component {
   render() {
@@ -54,7 +67,9 @@ class App extends Component {
             <img src={logo} className="App-logo" alt="logo" />
             <div>Number Of User Created: <span>{this.props.noOfUser}</span></div>
             <form noValidate autoComplete="off">
-              <TextField id="outlined-basic" label="Outlined" variant="outlined" />
+              <TextField id="outlined-basic" label="First Name" name="firstName" variant="outlined" onChange={this.props.handleTextField} />
+              <TextField id="outlined-basic" label="Last Name" name="lastName" variant="outlined" onChange={this.props.handleTextField} />
+              <TextField id="outlined-basic" label="Job Title" name="jobTitle" variant="outlined" onChange={this.props.handleTextField} />
             </form>
             <Button onClick={this.props.onCreateUser}>Create User</Button>
             <div style={{ height: 200, width: '70%' }}>
