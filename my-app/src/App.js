@@ -4,20 +4,19 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import { DataGrid } from '@material-ui/data-grid';
+import TextField from '@material-ui/core/TextField';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import axios from 'axios';
 
 const mapStateToProps = (state) => {
   return {
-    age: state.age,
+    noOfUser: state.noOfUser,
     users: state.users
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onAgeUp: () => dispatch({ type: 'AGE_UP' }),
-    onAgeDown: () => dispatch({ type: 'AGE_DOWN' }),
     onCreateUser: async () => dispatch(await createUser())
   }
 }
@@ -53,9 +52,10 @@ class App extends Component {
         <div className="App" >
           <header className="App-header">
             <img src={logo} className="App-logo" alt="logo" />
-            <div>Age: <span>{this.props.age}</span></div>
-            <Button onClick={this.props.onAgeUp}>Age Up</Button>
-            <Button onClick={this.props.onAgeDown}>Age Down</Button>
+            <div>Number Of User Created: <span>{this.props.noOfUser}</span></div>
+            <form noValidate autoComplete="off">
+              <TextField id="outlined-basic" label="Outlined" variant="outlined" />
+            </form>
             <Button onClick={this.props.onCreateUser}>Create User</Button>
             <div style={{ height: 200, width: '70%' }}>
               <DataGrid columns={column}
